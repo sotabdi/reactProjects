@@ -1,0 +1,75 @@
+/* service css start */
+
+#serviceFull {
+    padding: 100px 0;
+}
+
+.serviceBottom {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 25px;
+    padding-top: 50px;
+}
+
+.serviceCard {
+    padding: 63px 48px;
+    box-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    cursor: pointer;
+    transition: ease-in-out.2s;
+    -webkit-transition: ease-in-out.2s;
+    -moz-transition: ease-in-out.2s;
+    -ms-transition: ease-in-out.2s;
+    -o-transition: ease-in-out.2s;
+}
+
+.serviceCard:hover {
+    box-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.2);
+}
+
+.serviceCard:hover .serviceCard__icon {
+    background: var(--primary_color);
+    color: var(--White_color);
+}
+
+.serviceCard__header {
+    font-size: 25px;
+    font-family: var(--inter);
+    font-weight: 700;
+    color: var(--black_color);
+    padding: 30px 0 20px;
+}
+
+.serviceCard__discrip {
+    font-family: var(--inter);
+    font-size: 16px;
+    line-height: 27px;
+    color: var(--black70_color);
+    font-weight: 400;
+    max-width: 274px;
+}
+
+.serviceCard__icon {
+    padding: 17px;
+    color: var(--primary_color);
+    border: 1px solid var(--primary_color);
+    display: inline-block;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    transition: ease-in-out.2s;
+    -webkit-transition: ease-in-out.2s;
+    -moz-transition: ease-in-out.2s;
+    -ms-transition: ease-in-out.2s;
+    -o-transition: ease-in-out.2s;
+}
+
+
+/* service css end */

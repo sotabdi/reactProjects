@@ -1,0 +1,65 @@
+/* tetstimonial css */
+
+#testimonialFull {
+    padding-top: 100px;
+}
+
+.testi {
+    padding: 48px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.testi::before {
+    position: absolute;
+    content: url(../../assets/qoute.png);
+    bottom: 24px;
+    right: 30px;
+}
+
+.testimonialBottom {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 50px;
+}
+
+.stars {
+    display: flex;
+}
+
+.stars li {
+    color: #FBBF25;
+    padding: 30px 0 20px;
+}
+
+.testi__comment {
+    font-family: var(--inter);
+    color: var(--black70_color);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    max-width: 274px;
+}
+
+.testi__Title {
+    font-family: var(--inter);
+    font-size: 20px;
+    color: var(--black_color);
+    font-weight: 600;
+    padding-top: 15px;
+}
+
+.testi__tag {
+    font-family: var(--inter);
+    font-size: 16px;
+    color: var(--black70_color);
+    font-weight: 400;
+}
+
+
+/* tetstimonial css */

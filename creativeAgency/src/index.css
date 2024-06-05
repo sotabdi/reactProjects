@@ -1,0 +1,57 @@
+/* common css start */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+img {
+    vertical-align: middle;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+a,
+p,
+span,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 1169px;
+    margin: 0 auto;
+}
+
+:root {
+    --inter: "Inter", sans-serif;
+    --primary_color: #5956E8;
+    --black_color: #181818;
+    --black70_color: rgba(24, 24, 24, 0.705);
+    --grey_color: #5D5D5D;
+    --White_color: #fff;
+}
+
+
+/* common css end */

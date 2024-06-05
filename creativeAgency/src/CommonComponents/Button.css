@@ -1,0 +1,69 @@
+/* button css start */
+
+:root {
+    --inter: "Inter", sans-serif;
+    --primary_color: #5956E8;
+    --black_color: #181818;
+    --black70_color: rgba(24, 24, 24, 0.705);
+    --grey_color: #5D5D5D;
+    --White_color: #fff;
+}
+
+.DarkBtn {
+    font-family: var(--inter);
+    border: none;
+    padding: 13px 24px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--White_color);
+    background: var(--primary_color);
+    transition: ease-in-out.2s;
+    border: 1px solid var(--primary_color);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    -webkit-transition: ease-in-out.2s;
+    -moz-transition: ease-in-out.2s;
+    -ms-transition: ease-in-out.2s;
+    -o-transition: ease-in-out.2s;
+    cursor: pointer;
+}
+
+.DarkBtn:hover {
+    color: var(--primary_color);
+    border: 1px solid var(--primary_color);
+    background: none;
+}
+
+.lightBtn {
+    font-family: var(--inter);
+    border: none;
+    padding: 13px 24px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--primary_color);
+    background: var(--White_color);
+    border: 1px solid var(--White_color);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    cursor: pointer;
+    transition: ease-in-out .2s;
+    -webkit-transition: ease-in-out .2s;
+    -moz-transition: ease-in-out .2s;
+    -ms-transition: ease-in-out .2s;
+    -o-transition: ease-in-out .2s;
+}
+
+.lightBtn:hover {
+    color: var(--White_color);
+    border: 1px solid var(--White_color);
+    background: none;
+}
+
+
+/* button css end */

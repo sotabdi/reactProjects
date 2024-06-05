@@ -1,0 +1,41 @@
+/* banner css start */
+
+#bannerFull {
+    background: var(--primary_color);
+    padding: 182px 0;
+}
+
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bannerLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 25px;
+}
+
+.bannerLeft__header {
+    font-family: var(--inter);
+    color: var(--White_color);
+    font-size: 65px;
+    font-weight: 700;
+    line-height: 80px;
+    max-width: 501px;
+}
+
+.bannerLeft__discrip {
+    font-family: var(--inter);
+    font-size: 16px;
+    color: var(--White_color);
+    line-height: 27px;
+    font-weight: 400;
+    max-width: 542px;
+    padding-bottom: 5px;
+}
+
+
+/* banner css end */

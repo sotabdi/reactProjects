@@ -1,0 +1,36 @@
+/* header css */
+
+.flexCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 20px;
+    text-align: center;
+}
+
+.header {
+    font-family: var(--inter);
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--black_color);
+    max-width: 603px;
+}
+
+.discription {
+    font-family: var(--inter);
+    font-size: 16px;
+    line-height: 27px;
+    font-weight: 400;
+    color: var(--black70_color);
+    max-width: 542px;
+}
+
+.flexStart {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+
+/* header css */
