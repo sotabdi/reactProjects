@@ -1,66 +1,65 @@
 /* protfolio css */
 
 .protfolioBottom {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-top: 50px;
-    row-gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-top: 50px;
+  row-gap: 30px;
 }
 
 .protfolioCard {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .protfolioCardOverlay {
-    width: 230px;
-    height: 113px;
-    background: var(--primary_color);
-    position: absolute;
-    bottom: -125px;
-    left: 50%;
-    transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    padding: 25px 40px;
-    text-align: center;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
-    transition: ease-in-out.2s;
-    -webkit-transition: ease-in-out.2s;
-    -moz-transition: ease-in-out.2s;
-    -ms-transition: ease-in-out.2s;
-    -o-transition: ease-in-out.2s;
+  width: 230px;
+  height: 113px;
+  background: var(--primary_color);
+  position: absolute;
+  bottom: -125px;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  padding: 25px 40px;
+  text-align: center;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  transition: ease-in-out.2s;
+  -webkit-transition: ease-in-out.2s;
+  -moz-transition: ease-in-out.2s;
+  -ms-transition: ease-in-out.2s;
+  -o-transition: ease-in-out.2s;
 }
 
 .protfolioCard:hover .protfolioCardOverlay {
-    bottom: 20px;
+  bottom: 20px;
 }
 
 .protfolioCardOverly__header {
-    font-family: var(--inter);
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--White_color);
-    padding-bottom: 10px;
+  font-family: var(--inter);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--White_color);
+  padding-bottom: 10px;
 }
 
 .protfolioCardOverly__link {
-    font-family: var(--inter);
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--White_color);
+  font-family: var(--inter);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--White_color);
 }
 
 .protfolioCardOverly__link span {
-    vertical-align: middle;
+  vertical-align: middle;
 }
-
 
 /* protfolio css */

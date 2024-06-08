@@ -1,9 +1,9 @@
 import React from 'react';
-import './Protfolio.css';
+import { FaArrowRight } from "react-icons/fa6";
 import Header from '../../CommonComponents/Header';
 import ProtfolioImg1 from "../../assets/Protfolio1.png";
 import ProtfolioImg2 from "../../assets/Protfolio2.png";
-import { FaArrowRight } from "react-icons/fa6";
+import './Protfolio.css';
 
 function Protfolio() {
     const protfoliObj = [{

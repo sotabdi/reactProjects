@@ -1,0 +1,28 @@
+/* menulist css  */
+
+:root {
+  --inter: "Inter", sans-serif;
+  --primary_color: #5956e8;
+  --black_color: #181818;
+  --black70_color: rgba(24, 24, 24, 0.705);
+  --grey_color: #5d5d5d;
+  --White_color: #fff;
+}
+
+.menulistHeader {
+  font-family: var(--inter);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--black_color);
+  padding-bottom: 15px;
+}
+
+.list__item {
+  font-family: var(--inter);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--grey_color);
+  padding-bottom: 15px;
+}
+
+/* menulist css  */

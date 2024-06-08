@@ -1,0 +1,64 @@
+/* footer css */
+
+:root {
+  --inter: "Inter", sans-serif;
+  --primary_color: #5956e8;
+  --black_color: #181818;
+  --black70_color: rgba(24, 24, 24, 0.705);
+  --grey_color: #5d5d5d;
+  --White_color: #fff;
+}
+
+#footerFull {
+  background: rgba(89, 86, 232, 0.11);
+  padding: 100px 0;
+}
+
+.footerLeft__para {
+  max-width: 300px;
+  font-family: var(--inter);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--grey_color);
+  line-height: 27px;
+  padding: 10px 0 20px;
+}
+
+.footerLeft__icons span {
+  color: var(--primary_color);
+  background: var(--White_color);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  margin-right: 15px;
+  display: inline-block;
+  text-align: center;
+}
+
+.footerLeft__icons span svg {
+  font-size: 20px;
+  vertical-align: bottom;
+  line-height: 42px;
+  transform: translateY(50%);
+  -webkit-transform: translateY(50%);
+  -moz-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  -o-transform: translateY(50%);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footerRight {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 95px;
+}
+
+/* footer css */
