@@ -5,7 +5,7 @@ const RegistrationLeft = () => {
   return (
     <div
       id="registrationLeftFull"
-      className="w-[60%] flex justify-center items-center"
+      className="w-[55%] flex justify-center items-center"
     >
       <div className="registrationLeft flex flex-col justify-start items-start gap-y-10">
         <div className="registrationLeftTop flex flex-col gap-y-[13px]">
@@ -32,7 +32,7 @@ const RegistrationLeft = () => {
             />
             <InputFeild
               fName={"Password"}
-              placeholder={"••••••••"}
+              placeholder={"• • • • • • • •"}
               type={"password"}
               id={"password"}
             />
