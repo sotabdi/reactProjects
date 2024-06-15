@@ -1,7 +1,46 @@
-import React from "react";
+import { useState } from "react";
+import { emailValidator, nameValidator, passValidator } from '../../../Utils/Validation.jsx';
 import InputFeild from "../CommonComponents/InputFeild";
 
 const RegistrationLeft = () => {
+  // all states will declare here
+  const [email, setEmail] = useState("");
+  const [fullName, setFullname] = useState("");
+  const [password, setPassword] = useState("");
+
+  // for error handaling
+  const [emailerr, setEmailerr] = useState("");
+  const [fullNameerr, setFullNameerr] = useState("");
+  const [passerr, setpasserr] = useState("");
+
+  // state uapdate func
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleFullName = (event) => {
+    setFullname(event.target.value);
+  };
+
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  };
+  // input chackings
+  const loginSub = () => {
+    if (!email|| !emailValidator(email)) {
+      setEmailerr("Please enter your mail");
+    } else if (!fullName || !nameValidator(fullName)) {
+      setEmailerr('')
+      setFullNameerr("Please enter your name");
+    } else if (!password || !passValidator(password)) {
+      setFullNameerr('')
+      setpasserr("Please enter your password");
+    } else {
+      setpasserr('')
+      console.log("ok");
+    }
+  };
+
   return (
     <div
       id="registrationLeftFull"
@@ -17,28 +56,60 @@ const RegistrationLeft = () => {
           </p>
         </div>
         <div className="registrationLeftBottom">
-          <div className="registrationBottom__inputs flex flex-col gap-y-[47px]">
-            <InputFeild
-              fName={"Email Address"}
-              placeholder={"jhon@example.com"}
-              type={"text"}
-              id={"Email"}
-            />
-            <InputFeild
-              fName={"Ful name"}
-              placeholder={"Jhon Doe"}
-              type={"text"}
-              id={"FullName"}
-            />
-            <InputFeild
-              fName={"Password"}
-              placeholder={"• • • • • • • •"}
-              type={"password"}
-              id={"password"}
-            />
+          <div className="registrationBottom__inputs flex flex-col gap-y-[7px]">
+            <div>
+              <InputFeild
+                fName={"Email Address"}
+                placeholder={"jhon@example.com"}
+                type={"text"}
+                id={"Email"}
+                onChange={handleEmail}
+                add_ons={false}
+              />
+              <span className="text-red-700 font-nunito font-medium text-[16px] p-3 inline-block">
+                {emailerr}
+              </span>
+            </div>
+            <div>
+              <InputFeild
+                fName={"Fullname"}
+                placeholder={"Jhon Doe"}
+                type={"text"}
+                id={"FullName"}
+                onChange={handleFullName}
+                add_ons={false}
+              />
+              <span className="text-red-700 font-nunito font-medium text-[16px] p-3 inline-block">
+                {fullNameerr}
+              </span>
+            </div>
+            <div>
+              <InputFeild
+                fName={"Password"}
+                placeholder={"• • • • • • • •"}
+                type={"password"}
+                id={"password"}
+                onChange={handlePassword}
+                add_ons={true}
+              />
+              <span className="text-red-700 font-nunito font-medium text-[16px] p-3 inline-block">
+                {passerr}
+              </span>
+            </div>
           </div>
-          <a href="#" className="bg-primary_Color border-0 rounded-full p-[19px] block text-center font-nunito text-xl text-white font-semibold mt-[51px] mb-[35px]">Sign up</a>
-          <p className="registrationBottom__link text-center font-openSans font-normal text-Extra_cont_color">Already  have an account ? <a href="#" className="text-yellow_color font-bold">Sign In</a></p>
+          <a
+            href="#"
+            onClick={loginSub}
+            className="bg-primary_Color border-0 rounded-full p-[19px] block text-center font-nunito text-xl text-white font-semibold mt-[51px] mb-[35px]"
+          >
+            Sign up
+          </a>
+          <p className="registrationBottom__link text-center font-openSans font-normal text-Extra_cont_color">
+            Already have an account ?{" "}
+            <a href="#" className="text-yellow_color font-bold">
+              Sign In
+            </a>
+          </p>
         </div>
       </div>
     </div>

@@ -1,18 +1,42 @@
-import React from "react";
+import { useState } from "react";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const InputFeild = ({ fName, placeholder, type, id }) => {
+const InputFeild = ({ fName, placeholder, type, id, onChange, add_ons }) => {
+  const [eyeIcon, setEyeIcon] = useState(false)
+  const [inputType, setInputType] = useState(false)
+
+  const eyeIconChage = ()=>{
+    setEyeIcon(!eyeIcon)
+    setInputType(!inputType)
+  }
   return (
     <>
       <fieldset className="border-2 rounded-lg pl-10 border-secondary30_cont_color">
         <legend className="font-nunito text-[13px] font-semibold text-secondary70_cont_color px-3">
           {fName ? fName : "feildNamemissing"}
         </legend>
-        <input
-          type={type ? type : "text"}
-          id={id ? id : "idmissing"}
-          className="w-[368px] font-nunito text-xl text-primary_cont_color pb-[26px] pt-[16px] font-semibold pr-[30px] placeholder:font-nunito placeholder:text-xl placeholder:text-secondary_cont_color placeholder:font-semibold placeholder:ml-[10px]"
-          placeholder={placeholder ? placeholder : "placeholder missing"}
-        />
+        {add_ons ? (
+          <div className="flex items-center">
+            <input
+              onChange={onChange}
+              type={inputType?'text':type}
+              id={id ? id : "idmissing"}
+              className="w-[285px] font-nunito text-xl text-primary_cont_color pb-[24px] pt-[18px] font-semibold pl-3 placeholder:font-nunito placeholder:text-xl placeholder:text-secondary_cont_color placeholder:font-semibold placeholder:ml-[10px]"
+              placeholder={placeholder ? placeholder : "placeholder missing"}
+            />
+            <span className="mb-2 mx-3 cursor-pointer text-secondary_cont_color z-10" onClick={eyeIconChage}>
+              {eyeIcon?<BsEyeSlash/>:<BsEye />}
+            </span>
+          </div>
+        ) : (
+          <input
+            onChange={onChange}
+            type={type ? type : "text"}
+            id={id ? id : "idmissing"}
+            className="w-[285px] font-nunito text-xl text-primary_cont_color pb-[24px] pt-[18px] font-semibold pl-3 placeholder:font-nunito placeholder:text-xl placeholder:text-secondary_cont_color placeholder:font-semibold placeholder:ml-[10px]"
+            placeholder={placeholder ? placeholder : "placeholder missing"}
+          />
+        )}
       </fieldset>
     </>
   );

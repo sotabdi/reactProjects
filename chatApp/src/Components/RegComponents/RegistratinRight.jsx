@@ -1,4 +1,3 @@
-import React from 'react';
 import signupImg from '../../assets/signupimg.png';
 
 const RegistratinRight = () => {
