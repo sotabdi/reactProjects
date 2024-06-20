@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const InputFeild = ({ fName, placeholder, type, id, onChange, add_ons }) => {
+const InputFeild = ({
+  fName,
+  placeholder,
+  type,
+  id,
+  onChange,
+  add_ons,
+  value,
+}) => {
   const [eyeIcon, setEyeIcon] = useState(false);
   const [inputType, setInputType] = useState(false);
 
@@ -18,6 +26,7 @@ const InputFeild = ({ fName, placeholder, type, id, onChange, add_ons }) => {
         {add_ons ? (
           <div className="flex items-center">
             <input
+              value={value}
               onChange={onChange}
               type={inputType ? "text" : type}
               id={id ? id : "idmissing"}
@@ -33,6 +42,7 @@ const InputFeild = ({ fName, placeholder, type, id, onChange, add_ons }) => {
           </div>
         ) : (
           <input
+            value={value}
             onChange={onChange}
             type={type ? type : "text"}
             id={id ? id : "idmissing"}

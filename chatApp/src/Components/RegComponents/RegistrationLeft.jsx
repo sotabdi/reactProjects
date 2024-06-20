@@ -10,17 +10,19 @@ import { toast, Slide } from "react-toastify";
 import DotLoader from "react-spinners/DotLoader.js";
 
 const RegistrationLeft = () => {
+  //create object for override react spinner css
   const override = {
     display: "block",
     margin: "0 auto",
   };
   const auth = getAuth();
+
   // all states will declare here
   const [email, setEmail] = useState("");
   const [fullName, setFullname] = useState("");
   const [password, setPassword] = useState("");
-  const [loader, setLoader] = useState(false);
-  const [loadercolor, setLoaderColor] = useState("#5F35F5");
+  const [loader, setLoader] = useState(false); // loading spinner state
+  const [loadercolor, setLoaderColor] = useState("#5F35F5"); //loading spinner color state
 
   // for error handaling
   const [emailerr, setEmailerr] = useState("");
@@ -40,7 +42,9 @@ const RegistrationLeft = () => {
     setPassword(event.target.value);
   };
   // input chackings
-  const loginSub = () => {
+  const signUpSub = (e) => {
+    e.preventDefault(); //prevent default submit behaviour
+
     if (!email || !emailValidator(email)) {
       setEmailerr("Please enter your mail");
     } else if (!fullName || !nameValidator(fullName)) {
@@ -52,8 +56,8 @@ const RegistrationLeft = () => {
     } else {
       setpasserr("");
       setLoader(true);
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+      createUserWithEmailAndPassword(auth, email, password) // creating new user using firebase auth
+        .then(() => {
           toast.success(`${fullName} Registration complete`, {
             position: "top-right",
             autoClose: 3000,
@@ -67,7 +71,7 @@ const RegistrationLeft = () => {
           });
         })
         .catch((err) => {
-          let errormsg = err.message.split('/')[1].slice(0,-2);
+          let errormsg = err.message.split("/")[1].slice(0, -2);
           toast.error(errormsg, {
             position: "top-right",
             autoClose: 3000,
@@ -78,9 +82,15 @@ const RegistrationLeft = () => {
             progress: undefined,
             theme: "light",
             transition: Slide,
-            });
+          });
         })
-        .finally(() => setLoader(false));
+        .finally(() => {
+          // set all values to default
+          setFullname("");
+          setEmail("");
+          setPassword("");
+          setLoader(false);
+        });
     }
   };
 
@@ -108,6 +118,7 @@ const RegistrationLeft = () => {
                 id={"Email"}
                 onChange={handleEmail}
                 add_ons={false}
+                value={email}
               />
               <span className="text-red-700 font-nunito font-medium text-[16px] p-3 inline-block">
                 {emailerr}
@@ -121,6 +132,7 @@ const RegistrationLeft = () => {
                 id={"FullName"}
                 onChange={handleFullName}
                 add_ons={false}
+                value={fullName}
               />
               <span className="text-red-700 font-nunito font-medium text-[16px] p-3 inline-block">
                 {fullNameerr}
@@ -134,6 +146,7 @@ const RegistrationLeft = () => {
                 id={"password"}
                 onChange={handlePassword}
                 add_ons={true}
+                value={password}
               />
               <span className="text-red-700 font-nunito font-medium text-[16px] p-3 inline-block">
                 {passerr}
@@ -141,6 +154,7 @@ const RegistrationLeft = () => {
             </div>
           </div>
           <div className=" mt-[18px] mb-[35px]">
+            {/* conditional rendering onclik button */}
             {loader ? (
               <DotLoader
                 color={loadercolor}
@@ -153,7 +167,7 @@ const RegistrationLeft = () => {
             ) : (
               <button
                 href="#"
-                onClick={loginSub}
+                onClick={signUpSub}
                 className="w-full bg-primary_Color border-0 rounded-full p-[19px] text-center font-nunito text-xl text-white font-semibold"
               >
                 Sign up
