@@ -1,12 +1,26 @@
-import { useState } from "react";
-import { emailValidator, nameValidator, passValidator } from '../../../Utils/Validation.jsx';
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { useState, CSSProperties } from "react";
+import {
+  emailValidator,
+  nameValidator,
+  passValidator,
+} from "../../../Utils/Validation.jsx";
 import InputFeild from "../CommonComponents/InputFeild";
+import { toast, Slide } from "react-toastify";
+import DotLoader from "react-spinners/DotLoader.js";
 
 const RegistrationLeft = () => {
+  const override = {
+    display: "block",
+    margin: "0 auto",
+  };
+  const auth = getAuth();
   // all states will declare here
   const [email, setEmail] = useState("");
   const [fullName, setFullname] = useState("");
   const [password, setPassword] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [loadercolor, setLoaderColor] = useState("#5F35F5");
 
   // for error handaling
   const [emailerr, setEmailerr] = useState("");
@@ -27,17 +41,46 @@ const RegistrationLeft = () => {
   };
   // input chackings
   const loginSub = () => {
-    if (!email|| !emailValidator(email)) {
+    if (!email || !emailValidator(email)) {
       setEmailerr("Please enter your mail");
     } else if (!fullName || !nameValidator(fullName)) {
-      setEmailerr('')
+      setEmailerr("");
       setFullNameerr("Please enter your name");
     } else if (!password || !passValidator(password)) {
-      setFullNameerr('')
+      setFullNameerr("");
       setpasserr("Please enter your password");
     } else {
-      setpasserr('')
-      console.log("ok");
+      setpasserr("");
+      setLoader(true);
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          toast.success(`${fullName} Registration complete`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Slide,
+          });
+        })
+        .catch((err) => {
+          let errormsg = err.message.split('/')[1].slice(0,-2);
+          toast.error(errormsg, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Slide,
+            });
+        })
+        .finally(() => setLoader(false));
     }
   };
 
@@ -97,17 +140,30 @@ const RegistrationLeft = () => {
               </span>
             </div>
           </div>
-          <a
-            href="#"
-            onClick={loginSub}
-            className="bg-primary_Color border-0 rounded-full p-[19px] block text-center font-nunito text-xl text-white font-semibold mt-[51px] mb-[35px]"
-          >
-            Sign up
-          </a>
+          <div className=" mt-[18px] mb-[35px]">
+            {loader ? (
+              <DotLoader
+                color={loadercolor}
+                loading={loader}
+                size={35}
+                cssOverride={override}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            ) : (
+              <button
+                href="#"
+                onClick={loginSub}
+                className="w-full bg-primary_Color border-0 rounded-full p-[19px] text-center font-nunito text-xl text-white font-semibold"
+              >
+                Sign up
+              </button>
+            )}
+          </div>
           <p className="registrationBottom__link text-center font-openSans font-normal text-Extra_cont_color">
             Already have an account ?{" "}
             <a href="#" className="text-yellow_color font-bold">
-              Sign In
+              Sign in
             </a>
           </p>
         </div>
