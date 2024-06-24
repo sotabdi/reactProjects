@@ -1,13 +1,18 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { useState, CSSProperties } from "react";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
+import { useState } from "react";
 import {
   emailValidator,
   nameValidator,
   passValidator,
 } from "../../../Utils/Validation.jsx";
 import InputFeild from "../CommonComponents/InputFeild";
-import { toast, Slide } from "react-toastify";
 import DotLoader from "react-spinners/DotLoader.js";
+import { successToast, errorToast } from "../../../Utils/Toast.jsx";
 
 const RegistrationLeft = () => {
   //create object for override react spinner css
@@ -55,34 +60,29 @@ const RegistrationLeft = () => {
       setpasserr("Please enter your password");
     } else {
       setpasserr("");
+      setEmailerr("");
+      setFullNameerr("");
       setLoader(true);
       createUserWithEmailAndPassword(auth, email, password) // creating new user using firebase auth
         .then(() => {
-          toast.success(`${fullName} Registration complete`, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Slide,
+          successToast(`${fullName} registration complete`, 4000, "top-right");
+        })
+        .then(() => {
+          sendEmailVerification(auth.currentUser).then(() => {
+            successToast(
+              `we've sent you an email. please check your inbox to continue`
+            );
           });
+        })
+        .then(() => {
+          updateProfile(auth.currentUser),
+            {
+              displayName: fullName,
+            };
         })
         .catch((err) => {
           let errormsg = err.message.split("/")[1].slice(0, -2);
-          toast.error(errormsg, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Slide,
-          });
+          errorToast(errormsg, 4000, "top-right");
         })
         .finally(() => {
           // set all values to default

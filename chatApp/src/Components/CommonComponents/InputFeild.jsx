@@ -11,11 +11,9 @@ const InputFeild = ({
   value,
 }) => {
   const [eyeIcon, setEyeIcon] = useState(false);
-  const [inputType, setInputType] = useState(false);
 
   const eyeIconChage = () => {
     setEyeIcon(!eyeIcon);
-    setInputType(!inputType);
   };
   return (
     <>
@@ -28,7 +26,7 @@ const InputFeild = ({
             <input
               value={value}
               onChange={onChange}
-              type={inputType ? "text" : type}
+              type={eyeIcon ? "text" : type}
               id={id ? id : "idmissing"}
               className="w-[285px] font-nunito text-xl text-primary_cont_color pb-[24px] pt-[18px] font-semibold pl-3 placeholder:font-nunito placeholder:text-xl placeholder:text-secondary_cont_color placeholder:font-semibold placeholder:ml-[10px]"
               placeholder={placeholder ? placeholder : "placeholder missing"}
@@ -37,7 +35,7 @@ const InputFeild = ({
               className="mb-2 mx-3 cursor-pointer text-secondary_cont_color z-10"
               onClick={eyeIconChage}
             >
-              {eyeIcon ? <BsEyeSlash /> : <BsEye />}
+              {eyeIcon ? <BsEye /> : <BsEyeSlash />}
             </span>
           </div>
         ) : (
