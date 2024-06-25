@@ -3,14 +3,17 @@ import { FcGoogle } from "react-icons/fc";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { emailValidator, passValidator } from "../../../Utils/Validation";
 
+// all state
 const SignInLeft = () => {
   const [eyeIcon, setEyeIcon] = useState(true);
   const [signInInfo, setSignInInfo] = useState({
     email: "",
     password: "",
   });
-  const [emailerr , setEmailerr] = useState('');
-  const [passerr , setPasserr] = useState('');
+  const [emailerr, setEmailerr] = useState("");
+  const [passerr, setPasserr] = useState("");
+
+  //   all state update func
   const handleInput = (e) => {
     setSignInInfo({
       ...signInInfo,
@@ -20,14 +23,21 @@ const SignInLeft = () => {
   const iconChange = () => {
     setEyeIcon(!eyeIcon);
   };
-  const handleLogin=(e)=>{
-    e.preventDefault()
-    if(!signInInfo.email || emailValidator(!signInInfo.email)){
-        setEmailerr('Please enter a valid mail')
-    }else if (signInInfo.password) {
-        console.log(signInInfo.password);
+
+  //  user default validation
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!signInInfo.email || !emailValidator(signInInfo.email)) {
+      setEmailerr("Please enter a valid mail");
+    } else if (!signInInfo.password || !passValidator(signInInfo.password)) {
+      setEmailerr("");
+      setPasserr("Please Enter your password");
+    } else {
+      setEmailerr("");
+      setPasserr("");
+      console.log("ready to match database");
     }
-  }
+  };
   return (
     <div id="signInLeft" className="flex justify-center items-center w-[55%]">
       <div className="signInleftContent">
@@ -61,8 +71,8 @@ const SignInLeft = () => {
               placeholder="Youraddres@email.com"
             />
             <span className="text-red-700 block font-nunito font-medium text-[16px] py-3">
-                {emailerr}
-              </span>
+              {emailerr}
+            </span>
           </div>
           <div>
             <label
@@ -84,8 +94,8 @@ const SignInLeft = () => {
               </span>
             </div>
             <span className="text-red-700 block font-nunito font-medium text-[16px] py-3">
-                {emailerr}
-              </span>
+              {passerr}
+            </span>
           </div>
           <div className="signInbtn">
             <button
