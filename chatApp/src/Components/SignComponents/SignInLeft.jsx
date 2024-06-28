@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { emailValidator, passValidator } from "../../../Utils/Validation";
-
+import { Link } from "react-router-dom";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { successToast, errorToast } from "../../../Utils/Toast";
+import { getDatabase, ref, set, push } from "firebase/database";
+import { getTime } from "../../../Utils/MomentJs/Moment";
 // all state
 const SignInLeft = () => {
+  const auth = getAuth();
+  const rdb = getDatabase();
+  const provider = new GoogleAuthProvider();
   const [eyeIcon, setEyeIcon] = useState(true);
   const [signInInfo, setSignInInfo] = useState({
     email: "",
@@ -24,6 +36,40 @@ const SignInLeft = () => {
     setEyeIcon(!eyeIcon);
   };
 
+  const signInGoogle = (e) => {
+    e.preventDefault();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        const userRef = ref(rdb , 'users')
+        const newuserRef = push(userRef)
+        set(newuserRef,{
+          uid: user.uid,
+          userName: user.displayName,
+          userMail: user.email,
+          createdAt: getTime()
+        })
+
+      }).then(()=>{
+        successToast('sign up successfully')
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
   //  user default validation
   const handleLogin = (e) => {
     e.preventDefault();
@@ -31,11 +77,17 @@ const SignInLeft = () => {
       setEmailerr("Please enter a valid mail");
     } else if (!signInInfo.password || !passValidator(signInInfo.password)) {
       setEmailerr("");
-      setPasserr("Please Enter your password");
+      setPasserr("Please Enter valid password");
     } else {
       setEmailerr("");
       setPasserr("");
-      console.log("ready to match database");
+      signInWithEmailAndPassword(auth, signInInfo.email, signInInfo.password)
+        .then(() => {
+          successToast("Login Successfull");
+        })
+        .catch((err) => {
+          errorToast(err.code);
+        });
     }
   };
   return (
@@ -48,6 +100,7 @@ const SignInLeft = () => {
           <button
             type="button"
             className="border border-secondary30_cont_color cursor-pointer font-openSans text-[13px] font-semibold py-[23px] px-[29px] rounded-lg"
+            onClick={signInGoogle}
           >
             <span className="inline-block align-middle text-[22px] pr-[5px]">
               <FcGoogle />
@@ -109,9 +162,11 @@ const SignInLeft = () => {
         </div>
         <p className="font-openSans font-normal text-[13.3px] text-Extra_cont_color">
           Don’t have an account ?{" "}
-          <a href="#" className="font-bold text-yellow_color">
-            Sign up
-          </a>
+          <Link to={"/registration"}>
+            <a href="registration" className="font-bold text-yellow_color">
+              Sign up
+            </a>
+          </Link>
         </p>
       </div>
     </div>

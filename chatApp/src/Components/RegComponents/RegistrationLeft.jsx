@@ -13,6 +13,9 @@ import {
 import InputFeild from "../CommonComponents/InputFeild";
 import DotLoader from "react-spinners/DotLoader.js";
 import { successToast, errorToast } from "../../../Utils/Toast.jsx";
+import { Link ,useNavigate } from "react-router-dom";
+import { getDatabase, ref, set, push } from "firebase/database";
+import { getTime } from "../../../Utils/MomentJs/Moment.js";
 
 const RegistrationLeft = () => {
   //create object for override react spinner css
@@ -21,6 +24,8 @@ const RegistrationLeft = () => {
     margin: "0 auto",
   };
   const auth = getAuth();
+  const rdb = getDatabase();
+  const navigate = useNavigate()
 
   // all states will declare here
   const [email, setEmail] = useState("");
@@ -77,8 +82,23 @@ const RegistrationLeft = () => {
         .then(() => {
           updateProfile(auth.currentUser),
             {
-              displayName: fullName,
+              displayName: fullName, //set display name to the auth for further uses
             };
+        })
+        .then(() => {
+          const userRef = ref(rdb, "users"); //set data to database
+          set(push(userRef), {
+            uid: auth.currentUser.uid,
+            userName: fullName,
+            userEmail: auth.currentUser.email,
+            time: getTime(),
+          })
+            .then(() => {
+              navigate('/login');
+            })
+            .catch((err) => {
+              errorToast(err.code);
+            });
         })
         .catch((err) => {
           let errormsg = err.message.split("/")[1].slice(0, -2);
@@ -176,9 +196,11 @@ const RegistrationLeft = () => {
           </div>
           <p className="registrationBottom__link text-center font-openSans font-normal text-Extra_cont_color">
             Already have an account ?{" "}
-            <a href="#" className="text-yellow_color font-bold">
-              Sign in
-            </a>
+            <Link to={"/login"}>
+              <a href="/login" className="text-yellow_color font-bold">
+                Sign in
+              </a>
+            </Link>
           </p>
         </div>
       </div>
