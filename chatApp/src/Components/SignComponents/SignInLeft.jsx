@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { emailValidator, passValidator } from "../../../Utils/Validation";
@@ -12,10 +12,13 @@ import {
 import { successToast, errorToast } from "../../../Utils/Toast";
 import { getDatabase, ref, set, push } from "firebase/database";
 import { getTime } from "../../../Utils/MomentJs/Moment";
-// all state
+import { InfinitySpin, LineWave } from "react-loader-spinner";
 const SignInLeft = () => {
+  // database
   const auth = getAuth();
   const rdb = getDatabase();
+  // all states
+  const [loading, setLoding] = useState(false);
   const provider = new GoogleAuthProvider();
   const [eyeIcon, setEyeIcon] = useState(true);
   const [signInInfo, setSignInInfo] = useState({
@@ -45,27 +48,27 @@ const SignInLeft = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        const userRef = ref(rdb , 'users')
-        const newuserRef = push(userRef)
-        set(newuserRef,{
+        const userRef = ref(rdb, "users");
+        const newuserRef = push(userRef);
+        set(newuserRef, {
           uid: user.uid,
           userName: user.displayName,
           userMail: user.email,
-          createdAt: getTime()
-        })
-
-      }).then(()=>{
-        successToast('sign up successfully')
+          createdAt: getTime(),
+        });
+      })
+      .then(() => {
+        successToast("sign up & set user data to firebase");
       })
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorMessage);
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        errorToast(errorCode);
         // ...
       });
   };
@@ -81,12 +84,16 @@ const SignInLeft = () => {
     } else {
       setEmailerr("");
       setPasserr("");
+      setLoding(true);
       signInWithEmailAndPassword(auth, signInInfo.email, signInInfo.password)
         .then(() => {
           successToast("Login Successfull");
         })
         .catch((err) => {
           errorToast(err.code);
+        })
+        .finally(() => {
+          setLoding(false);
         });
     }
   };
@@ -150,14 +157,23 @@ const SignInLeft = () => {
               {passerr}
             </span>
           </div>
-          <div className="signInbtn">
-            <button
-              type="button"
-              onClick={handleLogin}
-              className="w-full font-openSans font-semibold text-xl text-white bg-primary_Color py-[26px] rounded-lg"
-            >
-              Login to Continue
-            </button>
+          <div className="signInbtn flex justify-center items-center">
+            {loading ? (
+              <InfinitySpin
+                visible={true}
+                width="200"
+                color="#5F35F5"
+                ariaLabel="infinity-spin-loading"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={handleLogin}
+                className="w-full font-openSans font-semibold text-xl text-white bg-primary_Color py-[26px] rounded-lg"
+              >
+                Login to Continue
+              </button>
+            )}
           </div>
         </div>
         <p className="font-openSans font-normal text-[13.3px] text-Extra_cont_color">

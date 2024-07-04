@@ -91,7 +91,7 @@ const RegistrationLeft = () => {
             uid: auth.currentUser.uid,
             userName: fullName,
             userEmail: auth.currentUser.email,
-            time: getTime(),
+            createdAt: getTime(),
           })
             .then(() => {
               navigate('/login');

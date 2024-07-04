@@ -35,4 +35,36 @@
         margin: 0;
         padding: 0;
     }
+    @layer components {
+        .iconHov {
+            position: relative;
+            z-index: 1;
+        }
+        .iconHov svg {
+            color: #5f35f5;
+        }
+        .iconHov::before {
+            position: absolute;
+            content: "";
+            top: -44%;
+            left: -92%;
+            width: 161px;
+            height: 89px;
+            background: #fff;
+            z-index: -1;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+        .iconHov::after {
+            position: absolute;
+            content: "";
+            top: -44%;
+            right: -143%;
+            width: 8px;
+            height: 89px;
+            background: #5f35f5;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+    }
 }
