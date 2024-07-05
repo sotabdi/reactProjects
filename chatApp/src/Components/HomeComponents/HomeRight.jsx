@@ -4,17 +4,21 @@ import Search from "../CommonComponents/Search";
 import Friends from "./HomeRightComponents/Friends";
 import UserList from "./HomeRightComponents/UserList";
 import FriendReqest from "./HomeRightComponents/FriendReqest";
+import MyGroup from "./HomeRightComponents/MyGroup";
+import BlockUser from "./HomeRightComponents/BlockUser";
 
 const HomeRight = () => {
   return (
-    <div className="flex gap-x-[35px] flex-wrap">
+    <div className="flex gap-x-[22px] flex-wrap gap-y-[43px]">
       <div>
         <Search />
         <GroupList />
       </div>
       <Friends />
-      <UserList/>
-      <FriendReqest/>
+      <UserList />
+      <FriendReqest />
+      <MyGroup />
+      <BlockUser />
     </div>
   );
 };

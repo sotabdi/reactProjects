@@ -5,7 +5,7 @@ import { IoChatbubblesOutline,IoNotificationsOutline,IoSettingsOutline,IoLogOutO
 
 const HomeLeft = () => {
   return (
-    <div className='w-[186px] bg-primary_Color flex flex-col gap-y-[78px] items-center pt-[38px] pb-[38px] rounded-[20px]'>
+    <div className='w-[189px] flex-shrink-0 bg-primary_Color flex flex-col gap-y-[78px] items-center pt-[38px] pb-[38px] rounded-[20px]'>
         <div>
             <picture>
                 <img src={profileImg} alt={profileImg} />

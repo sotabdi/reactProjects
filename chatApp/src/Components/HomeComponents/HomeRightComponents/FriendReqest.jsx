@@ -4,10 +4,10 @@ import Profileimg from "../../../assets/HomeRightAssets/profileImg2.png";
 
 const FriendReqest = () => {
   return (
-    <div className="mt-[43px]">
+    <div className="">
       <div className="flex items-center justify-between px-5 pb-[13px]">
         <h4 className="font-poppins font-semibold text-xl">Friend Request</h4>
-        <span className="text-xl text-primary_Color">
+        <span className="text-xl text-primary_Color cursor-pointer">
           <BsThreeDotsVertical />
         </span>
       </div>
@@ -17,16 +17,20 @@ const FriendReqest = () => {
             className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
             key={index}
           >
-            <div>
-              <picture>
-                <img src={Profileimg} alt={Profileimg} />
-              </picture>
-            </div>
-            <div className="mr-[51px]">
-              <h6 className="font-poppins font-semibold text-[18px]">Swathi</h6>
-              <p className="font-poppins font-medium text-secondary70_cont_color text-[14px]">
-                Sure!
-              </p>
+            <div className="flex">
+              <div>
+                <picture>
+                  <img src={Profileimg} alt={Profileimg} />
+                </picture>
+              </div>
+              <div className="ml-[10px] self-center">
+                <h6 className="font-poppins font-semibold text-[18px]">
+                Swathi
+                </h6>
+                <p className="font-poppins font-medium text-secondary70_cont_color text-[14px]">
+                  sure!
+                </p>
+              </div>
             </div>
             <div>
               <button className="px-[6px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]">

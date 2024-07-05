@@ -2,17 +2,17 @@ import React from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
 
-const UserList = () => {
+const MyGroup = () => {
   return (
     <div>
       <div className="flex items-center justify-between px-5 pb-[13px]">
-        <h4 className="font-poppins font-semibold text-xl">User List</h4>
+        <h4 className="font-poppins font-semibold text-xl">My Groups</h4>
         <span className="text-xl text-primary_Color cursor-pointer">
           <BsThreeDotsVertical />
         </span>
       </div>
-      <div className="w-[344px] px-5 pb-[13px] h-[400px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide">
-        {[...new Array(8)].map((_, index) => (
+      <div className="w-[344px] px-5 pb-[13px] h-[347px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide">
+        {[...new Array(6)].map((_, index) => (
           <div
             className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
             key={index}
@@ -33,9 +33,9 @@ const UserList = () => {
               </div>
             </div>
             <div>
-              <button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]">
-                +
-              </button>
+              <p className="font-poppins font-medium text-[10px] text-secondary70_cont_color pb-6">
+                Today, 8:56pm
+              </p>
             </div>
           </div>
         ))}
@@ -44,4 +44,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default MyGroup;
