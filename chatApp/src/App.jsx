@@ -10,13 +10,18 @@ import {
   RouterProvider,
   Route
 } from "react-router-dom";
+import RootLayout from "./Components/HomeComponents/RootLayout/RootLayout";
+import Chat from "./Pages/Chat/Chat";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/registration" element={<Registration/>}/>
         <Route path="/login" element={<SignIn/>}/>
-        <Route path="/" element={<Home/>}/>
+        <Route element={<RootLayout/>}>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/Chat" element={<Chat/>}/>
+        </Route>
       </>
     )
   )
