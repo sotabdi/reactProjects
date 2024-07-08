@@ -1,39 +1,63 @@
 import React from "react";
-import { FaKey } from "react-icons/fa";
-import { IoInvertMode } from "react-icons/io5";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import ProfileImg from "../../../assets/SettingsAssets/Profile.png";
+import { FaEdit } from "react-icons/fa";
+import { FaRocketchat } from "react-icons/fa";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { IoIosHelpCircleOutline } from "react-icons/io";
 
-const AdditionalSettings = ({ className = "w-full h-full" }) => {
+const SettingsLeft = () => {
   return (
-    <div className={className}>
+    <div className="w-full h-full">
       <div className="flex flex-col h-full w-full shadow-lg pt-[26px] pb-[39px] px-[25px] rounded-[20px]">
         <div className="h-full">
           <h5 className="font-poppins font-semibold text-xl pb-[35px]">
             Account Settings
           </h5>
-          <div className="flex flex-col gap-y-[33px] pl-[58px]">
+          <div className="flex items-center gap-x-[31px] py-[29px] border-b">
+            <picture>
+              <img src={ProfileImg} alt={ProfileImg} />
+            </picture>
+            <div>
+              <h6 className="font-poppins font-semibold text-[25px]">
+                A B M Shawon Islam
+              </h6>
+              <p className="font-poppins font-normal text-[20px]">
+                Stay home stay safe
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-[33px] pl-[58px] pt-[43px]">
             <div className="flex items-center">
               <span className="text-2xl">
-                <FaKey />
+                <FaEdit />
               </span>
               <button className="font-poppins font-normal text-xl ml-[35px]">
-                Change Password
+                Edit Profile Name.
               </button>
             </div>
             <div className="flex items-center">
               <span className="text-2xl">
-                <IoInvertMode />
+                <FaRocketchat />
               </span>
               <button className="font-poppins font-normal text-xl ml-[35px]">
-                Theme
+                Edit Profile Status Info.
               </button>
             </div>
             <div className="flex items-center">
               <span className="text-2xl">
-                <RiDeleteBin6Fill />
+                <MdOutlineAddPhotoAlternate />
               </span>
               <button className="font-poppins font-normal text-xl ml-[35px]">
-                Delete Account
+                Edit Profile Photo.
+              </button>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl">
+                <IoIosHelpCircleOutline />
+              </span>
+              <button className="font-poppins font-normal text-xl ml-[35px]">
+                Help?
               </button>
             </div>
           </div>
@@ -51,4 +75,4 @@ const AdditionalSettings = ({ className = "w-full h-full" }) => {
   );
 };
 
-export default AdditionalSettings;
+export default SettingsLeft;

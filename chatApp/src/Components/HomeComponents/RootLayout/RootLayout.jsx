@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 const RootLayout = () => {
   return (
-    <div className='flex px-[32px] py-[35px] gap-x-[43px]'>
+    <div className='flex px-[32px] py-[35px] gap-x-[43px] w-full'>
         <HomeLeft/>
         <Outlet/>
     </div>

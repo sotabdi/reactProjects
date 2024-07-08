@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
         <HomeRight/>
-        <AdditionalSettings/>
+        <AdditionalSettings className='w-[25%]'/>
     </>
   )
 }

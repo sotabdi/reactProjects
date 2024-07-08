@@ -28,12 +28,12 @@ const HomeLeft = () => {
             <IoChatbubblesOutline />
           </span>
         </NavLink>
-        <NavLink to="/Notification">
+        <NavLink to="/Notification" className={({isActive, isPending})=> isPending ? "" : isActive ? "iconHov" : ""}>
           <span className="text-5xl text-icon_color cursor-pointer">
             <IoNotificationsOutline />
           </span>
         </NavLink>
-        <NavLink to='/Settings'>
+        <NavLink to='/Settings' className={({isActive, isPending})=> isPending ? "" : isActive ? "iconHov" : ""}>
           <span className="text-5xl text-icon_color cursor-pointer">
             <IoSettingsOutline />
           </span>

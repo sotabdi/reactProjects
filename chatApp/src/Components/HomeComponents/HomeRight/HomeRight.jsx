@@ -9,12 +9,12 @@ import BlockUser from "../HomeRightComponents/BlockUser";
 
 const HomeRight = () => {
   return (
-    <div className="flex gap-x-[22px] flex-wrap gap-y-[43px]">
-      <div>
+    <div className="flex gap-x-[23px] flex-wrap gap-y-[43px] w-[75%] h-full justify-between">
+      <div className="h-full">
         <Search />
         <GroupList />
       </div>
-      <Friends />
+      <Friends width={'w-[344px] h-[400px]'}/>
       <UserList />
       <FriendReqest />
       <MyGroup />

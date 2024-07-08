@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 import RootLayout from "./Components/HomeComponents/RootLayout/RootLayout";
 import Chat from "./Pages/Chat/Chat";
+import Notification from "./Pages/Notification/Notification";
+import Settings from "./Pages/Settings/Settings";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,6 +23,8 @@ function App() {
         <Route element={<RootLayout/>}>
           <Route path="/" element={<Home/>}/>
           <Route path="/Chat" element={<Chat/>}/>
+          <Route path="/Notification" element={<Notification/>}/>
+          <Route path="/Settings" element={<Settings/>}/>
         </Route>
       </>
     )

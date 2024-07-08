@@ -4,7 +4,7 @@ import ChatRight from '../../Components/ChatComponents/ChatRight/ChatRight';
 
 const Chat = () => {
   return (
-    <div className='flex justify-between'>
+    <div className='flex justify-between gap-x-[23px] w-full'>
         <ChatLeft/>
         <ChatRight/>
     </div>
