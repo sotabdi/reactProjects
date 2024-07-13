@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 const UserList = () => {
+  const db = getDatabase();
+
+  // fetch data from database and copy to my blank array
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    const dbref = ref(db, "users/");
+    onValue(dbref, (dta) => {
+      const arrDta = [];
+      dta.forEach((item) => {
+        arrDta.push({
+          ...item.val(),
+          userKey: item.key,
+        });
+      });
+      setdata(arrDta);
+    });
+  }, []);
+
   return (
     <div>
       <div className="flex items-center justify-between px-5 pb-[13px]">
@@ -12,23 +31,27 @@ const UserList = () => {
         </span>
       </div>
       <div className="w-[344px] px-5 pb-[13px] h-[400px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide">
-        {[...new Array(8)].map((_, index) => (
+        {data.map((item) => (
           <div
             className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
-            key={index}
+            key={item.userKey}
           >
             <div className="flex">
-              <div>
+              <div className="w-[70px] h-[70px] rounded-full">
                 <picture>
-                  <img src={Profileimg} alt={Profileimg} />
+                  <img
+                    src={item.profilePic ? item.profilePic : Profileimg}
+                    alt={Profileimg}
+                    className="w-full h-full rounded-full object-contain"
+                  />
                 </picture>
               </div>
               <div className="ml-[10px] self-center">
                 <h6 className="font-poppins font-semibold text-[14px]">
-                  Raghav
+                  {item.userName}
                 </h6>
                 <p className="font-poppins font-medium text-secondary70_cont_color text-[12px]">
-                  Hi Guys, Wassup!
+                  {item.createdAt}
                 </p>
               </div>
             </div>

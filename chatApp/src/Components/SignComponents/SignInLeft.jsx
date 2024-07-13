@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { emailValidator, passValidator } from "../../../Utils/Validation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -17,6 +17,7 @@ const SignInLeft = () => {
   // database
   const auth = getAuth();
   const rdb = getDatabase();
+  const navigate = useNavigate()
   // all states
   const [loading, setLoding] = useState(false);
   const provider = new GoogleAuthProvider();
@@ -48,17 +49,20 @@ const SignInLeft = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
+        return user
+      }).then((user)=>{
         const userRef = ref(rdb, "users");
         const newuserRef = push(userRef);
         set(newuserRef, {
           uid: user.uid,
           userName: user.displayName,
+          profilePic:user.photoURL,
           userMail: user.email,
           createdAt: getTime(),
         });
       })
       .then(() => {
-        successToast("sign up & set user data to firebase");
+        navigate('/')
       })
       .catch((error) => {
         // Handle Errors here.
@@ -87,7 +91,7 @@ const SignInLeft = () => {
       setLoding(true);
       signInWithEmailAndPassword(auth, signInInfo.email, signInInfo.password)
         .then(() => {
-          successToast("Login Successfull");
+          navigate('/');
         })
         .catch((err) => {
           errorToast(err.code);

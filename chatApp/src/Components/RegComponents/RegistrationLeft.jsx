@@ -82,7 +82,7 @@ const RegistrationLeft = () => {
         .then(() => {
           updateProfile(auth.currentUser),
             {
-              displayName: fullName, //set display name to the auth for further uses
+              displayName: fullName, //set display name to the auth for further useses
             };
         })
         .then(() => {
@@ -90,6 +90,7 @@ const RegistrationLeft = () => {
           set(push(userRef), {
             uid: auth.currentUser.uid,
             userName: fullName,
+            profilePic: '',
             userEmail: auth.currentUser.email,
             createdAt: getTime(),
           })
