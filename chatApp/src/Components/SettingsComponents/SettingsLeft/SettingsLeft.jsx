@@ -1,12 +1,16 @@
 import React from "react";
-import { RiDeleteBin6Fill } from "react-icons/ri";
 import ProfileImg from "../../../assets/SettingsAssets/Profile.png";
 import { FaEdit } from "react-icons/fa";
 import { FaRocketchat } from "react-icons/fa";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { IoIosHelpCircleOutline } from "react-icons/io";
+import { getAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 
 const SettingsLeft = () => {
+  const auth = getAuth()
+  const db = getDatabase();
+  
   return (
     <div className="w-full h-full">
       <div className="flex flex-col h-full w-full shadow-lg pt-[26px] pb-[39px] px-[25px] rounded-[20px]">

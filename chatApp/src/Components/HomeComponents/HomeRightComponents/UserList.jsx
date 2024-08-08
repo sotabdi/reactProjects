@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
 import { getDatabase, ref, onValue } from "firebase/database";
+import { getAuth } from "firebase/auth";
+
 
 const UserList = () => {
+  const auth = getAuth()
   const db = getDatabase();
 
   // fetch data from database and copy to my blank array
@@ -13,14 +16,19 @@ const UserList = () => {
     onValue(dbref, (dta) => {
       const arrDta = [];
       dta.forEach((item) => {
-        arrDta.push({
-          ...item.val(),
-          userKey: item.key,
-        });
+        if(auth.currentUser.uid !== item.val().uid){
+          arrDta.push({
+            ...item.val(),
+            userKey: item.key,
+          });
+        }
       });
       setdata(arrDta);
     });
   }, []);
+
+  console.log(data);
+  
 
   return (
     <div>
