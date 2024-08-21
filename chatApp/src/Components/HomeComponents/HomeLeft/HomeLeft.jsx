@@ -24,6 +24,15 @@ const HomeLeft = () => {
     multi: true,
     mimeTypes: ["image/*"],
     maxFileCount: 1,
+    editor: {
+      images: {
+        allowResizeOnMove: true,
+        preview: true,
+        crop: true,
+        cropRatio: 4 / 4,
+        cropShape: "circ",
+      },
+    },
   };
   const [data, setdata] = useState({});
   useEffect(() => {
@@ -45,7 +54,7 @@ const HomeLeft = () => {
   const profilepicrefDB = ref(db, `users/${data.userKey}`);
 
   const updateProfile = (path) => {
-    update(profilepicrefDB, {
+    path && update(profilepicrefDB, {
       profilePic: path,
     })
       .then(() => {

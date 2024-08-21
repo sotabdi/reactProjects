@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue , set, push } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { getTime } from "../../../../Utils/MomentJs/Moment";
 
 
 const UserList = () => {
@@ -11,6 +12,7 @@ const UserList = () => {
 
   // fetch data from database and copy to my blank array
   const [data, setdata] = useState([]);
+  const [userreq, setuserreq] = useState([]);
   useEffect(() => {
     const dbref = ref(db, "users/");
     onValue(dbref, (dta) => {
@@ -27,8 +29,32 @@ const UserList = () => {
     });
   }, []);
 
-  console.log(data);
-  
+  useEffect(()=>{
+    const dbref = ref(db, "FriendReq/");
+    let blankArr = []
+    onValue(dbref, (data)=>{
+      data.forEach((item)=>{
+        blankArr.push(item.val().senderUid+item.val().receiverUid);
+      })
+    })
+    setuserreq(blankArr);
+  },[])
+
+  function handleFriendReq(item){
+    const dbref = ref(db, 'FriendReq/');
+    set(push(dbref),{
+      senderName: auth.currentUser.displayName,
+      senderEmail: auth.currentUser.email,
+      senderUid: auth.currentUser.uid,
+      senderProfilePic: auth.currentUser.photoURL,
+      receiverName: item.userName,
+      receiverEmail: item.userEmail,
+      receiverUid: item.uid,
+      receiverPhotoUrl: item.profilePic,
+      receiverUserKey: item.userKey,
+      createdAt: getTime(),
+    } )
+  }
 
   return (
     <div>
@@ -64,9 +90,11 @@ const UserList = () => {
               </div>
             </div>
             <div>
-              <button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]">
+              {userreq.includes(auth.currentUser.uid+item.uid || item.uid + auth.currentUser.uid)?(<button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" >
+                -
+              </button>):<button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" onClick={()=>{handleFriendReq(item)}}>
                 +
-              </button>
+              </button>}
             </div>
           </div>
         ))}

@@ -8,8 +8,8 @@ import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 const SettingsLeft = () => {
-  const auth = getAuth()
-  const db = getDatabase();
+  const auth = getAuth();
+  const db = getDatabase(); 
   
   return (
     <div className="w-full h-full">
