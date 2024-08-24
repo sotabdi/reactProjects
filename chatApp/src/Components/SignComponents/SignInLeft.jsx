@@ -101,6 +101,7 @@ const SignInLeft = () => {
         });
     }
   };
+  
   return (
     <div id="signInLeft" className="flex justify-center items-center w-[55%]">
       <div className="signInleftContent">

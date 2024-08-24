@@ -4,25 +4,27 @@ import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
 import { getDatabase, ref, onValue , set, push } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { getTime } from "../../../../Utils/MomentJs/Moment";
+import { errorToast, successToast } from "../../../../Utils/Toast";
 
 
 const UserList = () => {
-  const auth = getAuth()
   const db = getDatabase();
+  const auth = getAuth()
 
   // fetch data from database and copy to my blank array
   const [data, setdata] = useState([]);
   const [userreq, setuserreq] = useState([]);
+
   useEffect(() => {
     const dbref = ref(db, "users/");
     onValue(dbref, (dta) => {
       const arrDta = [];
       dta.forEach((item) => {
         if(auth.currentUser.uid !== item.val().uid){
-          arrDta.push({
+            arrDta.push({
             ...item.val(),
             userKey: item.key,
-          });
+            });
         }
       });
       setdata(arrDta);
@@ -31,29 +33,33 @@ const UserList = () => {
 
   useEffect(()=>{
     const dbref = ref(db, "FriendReq/");
-    let blankArr = []
     onValue(dbref, (data)=>{
+      let blankArr = []
       data.forEach((item)=>{
         blankArr.push(item.val().senderUid+item.val().receiverUid);
       })
-    })
-    setuserreq(blankArr);
+      setuserreq(blankArr);
+    })    
   },[])
-
+  
   function handleFriendReq(item){
     const dbref = ref(db, 'FriendReq/');
     set(push(dbref),{
       senderName: auth.currentUser.displayName,
       senderEmail: auth.currentUser.email,
       senderUid: auth.currentUser.uid,
-      senderProfilePic: auth.currentUser.photoURL,
+      senderProfilePic: auth.currentUser.photoURL?auth.currentUser.photoURL:'',
       receiverName: item.userName,
       receiverEmail: item.userEmail,
       receiverUid: item.uid,
       receiverPhotoUrl: item.profilePic,
       receiverUserKey: item.userKey,
       createdAt: getTime(),
-    } )
+    } ).then(()=>{
+      successToast('Request Send');
+    }).catch((err)=>{
+      errorToast('somthig wrong')
+    })
   }
 
   return (

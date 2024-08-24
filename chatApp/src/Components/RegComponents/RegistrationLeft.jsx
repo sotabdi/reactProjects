@@ -80,10 +80,9 @@ const RegistrationLeft = () => {
           });
         })
         .then(() => {
-          updateProfile(auth.currentUser),
-            {
-              displayName: fullName, //set display name to the auth for further useses
-            };
+          updateProfile(auth.currentUser, {
+            displayName: fullName, //set display name to the auth for further useses
+          })
         })
         .then(() => {
           const userRef = ref(rdb, "users"); //set data to database

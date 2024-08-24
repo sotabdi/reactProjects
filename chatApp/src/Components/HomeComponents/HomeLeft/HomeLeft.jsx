@@ -12,7 +12,7 @@ import { Uploader } from "uploader";
 import { UploadButton } from "react-uploader";
 import { getDatabase, onValue, ref, update } from "firebase/database";
 import { errorToast, successToast } from "../../../../Utils/Toast";
-import { getAuth } from "firebase/auth";
+import { getAuth , updateProfile } from "firebase/auth";
 
 const HomeLeft = () => {
   const auth = getAuth();
@@ -48,20 +48,27 @@ const HomeLeft = () => {
         }
       });
     });
-  }, []);
+  }, []);  
 
   // database write referece
   const profilepicrefDB = ref(db, `users/${data.userKey}`);
 
-  const updateProfile = (path) => {
+  const updateProfiles = (path) => {
     path && update(profilepicrefDB, {
       profilePic: path,
-    })
-      .then(() => {
+    }).then(()=>{
+        updateProfile(auth.currentUser , {
+          photoURL: path
+        }).then(()=>{
+          successToast('auth updated')
+        }).catch((err)=>{
+          errorToast(err)
+        })
+      }).then(()=>{
         successToast("profile pic updated");
       })
       .catch((err) => {
-        errorToast(err.code);
+        errorToast(err);
       });
   };
   return (
@@ -78,7 +85,7 @@ const HomeLeft = () => {
           uploader={uploader}
           options={options}
           onComplete={(files) =>
-            updateProfile(files.map((x) => x.fileUrl).join("\n"))
+            updateProfiles(files.map((x) => x.fileUrl).join("\n"))
           }
         >
           {({ onClick }) => (
