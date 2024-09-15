@@ -2,30 +2,46 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
 import { getAuth } from "firebase/auth";
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
+import { errorToast, successToast } from "../../../../Utils/Toast";
+import { getTime } from "../../../../Utils/MomentJs/Moment";
 
-const Friends = ({width}) => {
-
+const Friends = ({ width }) => {
   const auth = getAuth();
   const db = getDatabase();
 
   const [friends, setfriends] = useState([]);
 
-useEffect(()=>{
-  const dbref = ref(db,'Friends/');
-  onValue(dbref,(datasnap)=>{
-    const blankArr = [];
-    datasnap.forEach(data=>{
-      if(auth.currentUser.uid === data.val().receiverUid) {
-        blankArr.push({
-          ...data.val(),
-          friendsKey: data.key,
-        })
-      }
+  useEffect(() => {
+    const dbref = ref(db, "Friends/");
+    onValue(dbref, (datasnap) => {
+      const blankArr = [];
+      datasnap.forEach((data) => {
+        if (auth.currentUser.uid === data.val().receiverUid) {
+          blankArr.push({
+            ...data.val(),
+            friendsKey: data.key,
+          });
+        }
+      });
+      setfriends(blankArr);
+    });
+  }, []);
+
+  const handleBlock = (item)=>{
+    const dbref = ref(db, "Blocked/");
+    set(push(dbref), {
+      ...item,
+      createdAt: getTime()
+    }).then(()=>{
+      const friendsref = ref(db, 'Friends/' + item?.friendsKey);
+      remove(friendsref);
+    }).then(()=>{
+      successToast('Blocked')
+    }).catch(err=>{
+      errorToast(err);
     })
-    setfriends(blankArr);
-  })
-},[])
+  }
 
   return (
     <div>
@@ -59,9 +75,12 @@ useEffect(()=>{
                 </div>
               </div>
               <div>
-                <p className="font-poppins font-medium text-[10px] text-secondary70_cont_color pb-6">
-                  Today, 8:56pm
-                </p>
+              <button
+                  className="px-[6px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[14px]"
+                  onClick={()=>handleBlock(item)}
+                >
+                  Block
+                </button>
               </div>
             </div>
           ))}

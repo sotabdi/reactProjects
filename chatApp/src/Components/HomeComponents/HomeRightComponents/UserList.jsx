@@ -14,6 +14,7 @@ const UserList = () => {
   // fetch data from database and copy to my blank array
   const [data, setdata] = useState([]);
   const [userreq, setuserreq] = useState([]);
+  const [friendDta, setfriendsDta] = useState([]);
 
   useEffect(() => {
     const dbref = ref(db, "users/");
@@ -40,6 +41,17 @@ const UserList = () => {
       })
       setuserreq(blankArr);
     })    
+  },[])
+
+  useEffect(()=>{
+    const dbref = ref(db, "Friends/")
+    onValue(dbref, (dta)=>{
+      let blankarr = [];
+      dta.forEach((item)=>{
+        blankarr.push(item.val())
+      })
+      setfriendsDta(blankarr);
+    })
   },[])
   
   function handleFriendReq(item){
@@ -96,11 +108,18 @@ const UserList = () => {
               </div>
             </div>
             <div>
-              {userreq.includes(auth.currentUser.uid+item.uid || item.uid + auth.currentUser.uid)?(<button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" >
-                -
-              </button>):<button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" onClick={()=>{handleFriendReq(item)}}>
-                +
-              </button>}
+              {/* {friendDta.map((itm,index)=>(
+                item.userEmail !== itm.senderEmail ? (userreq.includes(auth.currentUser.uid+item.uid || item.uid + auth.currentUser.uid)?(<button key={index} className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" >
+                  -
+                </button>):<button key={index} className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" onClick={()=>{handleFriendReq(item)}}>
+                  +
+                </button>): ''
+              ))} */
+                userreq.includes(auth.currentUser.uid+item.uid || item.uid + auth.currentUser.uid)?(<button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" >
+                  -
+                </button>):<button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]" onClick={()=>{handleFriendReq(item)}}>
+                  +
+                </button>}
             </div>
           </div>
         ))}

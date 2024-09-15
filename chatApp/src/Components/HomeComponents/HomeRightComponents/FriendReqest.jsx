@@ -42,7 +42,7 @@ const FriendReqest = () => {
     const dbref = ref(db,'Friends/');
     set(push(dbref),{
       ...item,
-      createAt: getTime(),
+      createdAt: getTime(),
       receiverUserKey: null
     }).then(()=>{
       const dbref = ref(db , 'FriendReq/' + item?.itemKey);
@@ -61,7 +61,7 @@ const FriendReqest = () => {
         </span>
       </div>
       <div className="w-[427px] px-5 pb-[13px] h-[347px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide">
-        {friendReq.map((item, index) => (
+        {friendReq?.map((item, index) => (
           <div
             className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
             key={index}
