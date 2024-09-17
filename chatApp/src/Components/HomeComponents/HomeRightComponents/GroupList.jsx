@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg.png";
 import ModalComponent from "../../CommonComponents/ModalComponents/ModalComponent";
@@ -6,6 +6,7 @@ import CropperComponent from "../../CommonComponents/CropperComponents/CropperCo
 
 const GroupList = () => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [groupName , setgroupName] = useState({});
 
   function openModal() {
     setIsOpen(true);
@@ -13,6 +14,13 @@ const GroupList = () => {
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  const handleInput = (e)=>{
+    setgroupName({
+      ...groupName,
+      [e.target.placeholder]: e.target.value,
+    })
   }
   return (
     <div className="mt-[43px]">
@@ -56,29 +64,35 @@ const GroupList = () => {
           <form action="#" method="post" onSubmit={(e) => e.preventDefault()}>
             <div className="flex justify-between gap-x-10">
               <div className="w-[30%]">
-                <div className="flex flex-col mb-3">
+                <div className="flex flex-col gap-y-2 mb-5">
                   <label htmlFor="groupName" className="text-xl font-poppins">
-                    Enter Group Name
+                    Enter Group Name <span className="text-red-800">*</span>
                   </label>
                   <input
                     type="text"
-                    className="border border-primary_Color rounded-md font-poppins px-1"
+                    className="border border-primary_Color rounded-md font-poppins px-3 py-2"
                     placeholder="Group Name"
+                    onChange={handleInput}
+                    value={groupName['Group Name']}
+                    maxLength={'16'}
                   />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-y-2 mb-5">
                   <label htmlFor="groupTag" className="text-xl font-poppins">
-                    Enter Group Name
+                    Enter Group Tag  <span className="text-red-800">*</span>
                   </label>
                   <input
                     type="text"
-                    className="border border-primary_Color rounded-md font-poppins px-1"
+                    className="border border-primary_Color rounded-md font-poppins px-3 py-2"
                     placeholder="Group Tag"
+                    onChange={handleInput}
+                    value={groupName['Group Tag']}
+                    maxLength={'16'}
                   />
                 </div>
               </div>
               <div className="w-[70%]">
-                <CropperComponent />
+                <CropperComponent groupName={groupName}/>
               </div>
             </div>
           </form>

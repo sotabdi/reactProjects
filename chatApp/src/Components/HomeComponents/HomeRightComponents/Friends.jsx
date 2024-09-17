@@ -17,7 +17,7 @@ const Friends = ({ width }) => {
     onValue(dbref, (datasnap) => {
       const blankArr = [];
       datasnap.forEach((data) => {
-        if (auth.currentUser.uid === data.val().receiverUid) {
+        if (auth.currentUser.uid === data.val().receiverUid || auth.currentUser.uid === data.val().senderUid) {
           blankArr.push({
             ...data.val(),
             friendsKey: data.key,
@@ -58,16 +58,17 @@ const Friends = ({ width }) => {
             <div
               className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
               key={index}
-            >
+            >{console.log(item)
+            }
               <div className="flex">
                 <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
                   <picture>
-                    <img src={item.senderProfilePic} alt={Profileimg} />
+                    <img src={auth.currentUser.email===item.receiverEmail?item.senderProfilePic : item.receiverPhotoUrl} alt={auth.currentUser.email===item.receiverEmail?item.senderProfilePic : item.receiverPhotoUrl} />
                   </picture>
                 </div>
                 <div className="ml-[10px] self-center">
                   <h6 className="font-poppins font-semibold text-[14px]">
-                    {item.senderName}
+                    {auth.currentUser.email===item.receiverEmail?item.senderName:item.receiverName}
                   </h6>
                   <p className="font-poppins font-medium text-secondary70_cont_color text-[12px]">
                     Hi Guys, Wassup!
