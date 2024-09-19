@@ -4,7 +4,9 @@ import "cropperjs/dist/cropper.css";
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
 
-const CropperComponent = ({ groupName }) => {
+const CropperComponent = ({ groupInfo,handleCreate }) => {
+
+  const {groupName,groupTag} = groupInfo;
   const [image, setImage] = useState(defaultSrc);
   const [cropData, setCropData] = useState();
   const cropperRef = createRef();
@@ -28,7 +30,7 @@ const CropperComponent = ({ groupName }) => {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
   };
-
+  
   return (
     <div>
       <div style={{ width: "100%" }}>
@@ -70,13 +72,13 @@ const CropperComponent = ({ groupName }) => {
                 ></div>
                 <div className="flex flex-col gap-y-1">
                   <h5 className="font-poppins font-bold text-2xl capitalize">
-                    {groupName["Group Name"]
-                      ? groupName["Group Name"]
+                    {groupName
+                      ? groupName
                       : "Group Name"}
                   </h5>
                   <h5 className="font-poppins text-lg">
-                    {groupName["Group Tag"]
-                      ? groupName["Group Tag"]
+                    {groupTag
+                      ? groupTag
                       : "Group Tag"}
                   </h5>
                 </div>
@@ -88,7 +90,7 @@ const CropperComponent = ({ groupName }) => {
                 >
                   Crop Image
                 </button>
-                {cropData?(<button className="font-poppins border border-primary_Color text-[16px] text-primary_Color font-semibold rounded-md px-[30px] py-[10px] hover:bg-primary_Color hover:text-white transition-all">
+                {cropData?(<button onClick={()=>{handleCreate(cropData)}} className="font-poppins border border-primary_Color text-[16px] text-primary_Color font-semibold rounded-md px-[30px] py-[10px] hover:bg-primary_Color hover:text-white transition-all">
                   Create
                 </button>):(<button disabled className=" disabled:opacity-50 font-poppins border border-primary_Color text-[16px] text-primary_Color font-semibold rounded-md px-[30px] py-[10px]">
                   Create

@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg.png";
 import ModalComponent from "../../CommonComponents/ModalComponents/ModalComponent";
 import CropperComponent from "../../CommonComponents/CropperComponents/CropperComponent";
+import { getDatabase, push, ref, set } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import { getDownloadURL, getStorage, ref as storageRef, uploadString } from "firebase/storage";
+import { v4 as uuidv4} from 'uuid';
+import { errorToast, successToast } from "../../../../Utils/Toast";
 
 const GroupList = () => {
+  const storage = getStorage();
+  const db = getDatabase();
+  const auth = getAuth();
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [groupName , setgroupName] = useState({});
+  const [groupInfo, setgroupInfo] = useState({});
+  const [err, seterr] = useState({});
+  const [loading, setloading] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -14,14 +23,74 @@ const GroupList = () => {
 
   function closeModal() {
     setIsOpen(false);
+
+    // clearing all input feild on close button
+    setgroupInfo({
+      ...groupInfo,
+      groupName: "",
+      groupTag: "",
+    });
+    seterr({
+      ...err,
+      groupName: "",
+      groupTag: "",
+    });
   }
 
-  const handleInput = (e)=>{
-    setgroupName({
-      ...groupName,
-      [e.target.placeholder]: e.target.value,
-    })
-  }
+  const handleInput = (e) => {
+    setgroupInfo({
+      ...groupInfo,
+      [e.target.id]: e.target.value,
+    });
+    seterr({
+      ...err,
+      groupName: "",
+      groupTag: "",
+    });
+  };
+  
+
+  const handleCreate = (cropData, setCropData) => {
+    let hasErr = false;
+    let error = {};
+    if (!groupInfo.groupName) {
+      error["groupName"] = "Group Name Required";
+      hasErr = true;
+    }
+    if (!groupInfo.groupTag) {
+      error["groupTag"] = "Group Tag Required";
+      hasErr = true;
+    }
+    seterr(error);
+    if (!hasErr) {
+      const dbref = ref(db, "groups/");
+      const imgStorageref= storageRef(storage, `groupImage${uuidv4().split('-').slice(-1)}`)
+      const cropImg = cropData;
+      uploadString(imgStorageref, cropImg, "data_url").then((snapshot) => {
+        const {metadata} = snapshot
+        return metadata?.fullPath
+      }).then((imagePath)=>{
+         return getDownloadURL(storageRef(storage, imagePath) )
+      }).then((imagerUrl)=>{
+        set(push(dbref), {
+          groupName: groupInfo.groupName,
+          groupTag: groupInfo.groupTag,
+          groupImage: imagerUrl,
+          whoCreatedUid: auth.currentUser.uid,
+          whoCreatedName: auth.currentUser.displayName,
+          whoCreatedEail: auth.currentUser.email,
+          whoCreatedPhoto: auth.currentUser.photoURL,
+        }).catch((err)=>{
+          errorToast(err);
+        }).finally(()=>{
+          successToast('Group created successfully')
+          setCropData('');
+          closeModal();
+        });
+      });
+    }
+  };
+
   return (
     <div className="mt-[43px]">
       <div className="flex items-center justify-between px-5 pb-[13px]">
@@ -70,29 +139,40 @@ const GroupList = () => {
                   </label>
                   <input
                     type="text"
+                    id="groupName"
                     className="border border-primary_Color rounded-md font-poppins px-3 py-2"
                     placeholder="Group Name"
                     onChange={handleInput}
-                    value={groupName['Group Name']}
-                    maxLength={'16'}
+                    value={groupInfo["groupName"]}
+                    maxLength={"16"}
                   />
+                  {err.groupName && (
+                    <p className="font-poppins text-red-700">{err.groupName}</p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-y-2 mb-5">
                   <label htmlFor="groupTag" className="text-xl font-poppins">
-                    Enter Group Tag  <span className="text-red-800">*</span>
+                    Enter Group Tag <span className="text-red-800">*</span>
                   </label>
                   <input
                     type="text"
+                    id="groupTag"
                     className="border border-primary_Color rounded-md font-poppins px-3 py-2"
                     placeholder="Group Tag"
                     onChange={handleInput}
-                    value={groupName['Group Tag']}
-                    maxLength={'16'}
+                    value={groupInfo["groupTag"]}
+                    maxLength={"16"}
                   />
+                  {err.groupTag && (
+                    <p className="font-poppins text-red-700">{err.groupTag}</p>
+                  )}
                 </div>
               </div>
               <div className="w-[70%]">
-                <CropperComponent groupName={groupName}/>
+                <CropperComponent
+                  groupInfo={groupInfo}
+                  handleCreate={handleCreate}
+                />
               </div>
             </div>
           </form>

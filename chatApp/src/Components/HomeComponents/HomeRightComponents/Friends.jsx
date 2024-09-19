@@ -58,8 +58,7 @@ const Friends = ({ width }) => {
             <div
               className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
               key={index}
-            >{console.log(item)
-            }
+            >
               <div className="flex">
                 <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
                   <picture>
