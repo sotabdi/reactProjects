@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
+import { getDatabase, onValue, ref } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
-const MyGroup = () => {
+const MyGroup = ({width}) => {
+  const db =getDatabase();
+  const auth = getAuth();
+
+  const [mygroupList, setmygroupList] = useState();
+  
+  useEffect(()=>{
+    const dbref = ref(db, 'groups/');
+    onValue(dbref, (datasnap)=>{
+      let blankarr = []
+      datasnap.forEach((data)=>{
+        if(data.val().whoCreatedUid === auth.currentUser.uid){
+          blankarr.push({
+            ...data.val(),
+            groupKey: data.key
+          })
+        }
+        setmygroupList(blankarr)
+      })
+    })
+  },[])
+  
+  
   return (
     <div>
       <div className="flex items-center justify-between px-5 pb-[13px]">
@@ -11,24 +35,24 @@ const MyGroup = () => {
           <BsThreeDotsVertical />
         </span>
       </div>
-      <div className="w-[344px] px-5 pb-[13px] h-[347px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide">
-        {[...new Array(6)].map((_, index) => (
+      <div className="px-5 pb-[13px] h-[347px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide" style={{width: width}}>
+        {mygroupList?.map((item, index) => (
           <div
-            className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
+            className="w-full flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
             key={index}
           >
             <div className="flex">
-              <div>
+              <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
                 <picture>
-                  <img src={Profileimg} alt={Profileimg} />
+                  <img src={item.groupImage} alt={item.groupImage} />
                 </picture>
               </div>
               <div className="ml-[10px] self-center">
                 <h6 className="font-poppins font-semibold text-[14px]">
-                  Raghav
+                  {item.groupName}
                 </h6>
                 <p className="font-poppins font-medium text-secondary70_cont_color text-[12px]">
-                  Hi Guys, Wassup!
+                  {item.groupTag}
                 </p>
               </div>
             </div>

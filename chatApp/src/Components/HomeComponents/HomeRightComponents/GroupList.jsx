@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Profileimg from "../../../assets/HomeRightAssets/profileImg.png";
 import ModalComponent from "../../CommonComponents/ModalComponents/ModalComponent";
 import CropperComponent from "../../CommonComponents/CropperComponents/CropperComponent";
-import { getDatabase, push, ref, set } from "firebase/database";
+import { getDatabase, onValue, push, ref, set } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { getDownloadURL, getStorage, ref as storageRef, uploadString } from "firebase/storage";
 import { v4 as uuidv4} from 'uuid';
 import { errorToast, successToast } from "../../../../Utils/Toast";
+import { Oval } from "react-loader-spinner";
 
 const GroupList = () => {
   const storage = getStorage();
@@ -16,6 +17,7 @@ const GroupList = () => {
   const [groupInfo, setgroupInfo] = useState({});
   const [err, seterr] = useState({});
   const [loading, setloading] = useState(false);
+  const [groupList, setgroupList]= useState();
 
   function openModal() {
     setIsOpen(true);
@@ -49,6 +51,19 @@ const GroupList = () => {
     });
   };
   
+  useEffect(()=>{
+    const dbref = ref(db , 'groups/');
+    onValue(dbref, (datasnap)=>{
+      let blankArr = []
+      datasnap.forEach((data)=>{
+          blankArr.push({
+            ...data.val(),
+            groupKey: data.key,
+          });
+      })
+      setgroupList(blankArr);
+    })
+  },[])
 
   const handleCreate = (cropData, setCropData) => {
     let hasErr = false;
@@ -63,6 +78,7 @@ const GroupList = () => {
     }
     seterr(error);
     if (!hasErr) {
+      setloading(true);
       const dbref = ref(db, "groups/");
       const imgStorageref= storageRef(storage, `groupImage${uuidv4().split('-').slice(-1)}`)
       const cropImg = cropData;
@@ -78,11 +94,12 @@ const GroupList = () => {
           groupImage: imagerUrl,
           whoCreatedUid: auth.currentUser.uid,
           whoCreatedName: auth.currentUser.displayName,
-          whoCreatedEail: auth.currentUser.email,
+          whoCreatedEmail: auth.currentUser.email,
           whoCreatedPhoto: auth.currentUser.photoURL,
         }).catch((err)=>{
           errorToast(err);
         }).finally(()=>{
+          setloading(false);
           successToast('Group created successfully')
           setCropData('');
           closeModal();
@@ -100,37 +117,37 @@ const GroupList = () => {
         </span>
       </div>
       <div className="w-[427px] px-5 pb-[13px] h-[300px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide">
-        {[...new Array(6)].map((_, index) => (
+        {groupList?.map((item, index) => (
           <div
             className="flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
             key={index}
           >
             <div className="flex">
-              <div>
+              <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
                 <picture>
-                  <img src={Profileimg} alt={Profileimg} />
+                  <img src={item.groupImage} alt={item.groupImage} />
                 </picture>
               </div>
               <div className="ml-[10px] self-center">
                 <h6 className="font-poppins font-semibold text-[18px]">
-                  Friends Reunion
+                  {item.groupName}
                 </h6>
                 <p className="font-poppins font-medium text-secondary70_cont_color text-[14px]">
-                  Hi Guys, Wassup!
+                  {item.groupTag}
                 </p>
               </div>
             </div>
             <div>
-              <button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]">
+              {item.whoCreatedUid!==auth.currentUser.uid && (<button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[20px]">
                 Join
-              </button>
+              </button>)}
             </div>
           </div>
         ))}
       </div>
       <ModalComponent closeModal={closeModal} modalIsOpen={modalIsOpen}>
-        <div className="w-[80vw]">
-          <form action="#" method="post" onSubmit={(e) => e.preventDefault()}>
+        <div className="w-[80vw]" style={loading ? {display: "flex",justifyContent: 'center', alignItems: 'center', height: '700px'}: {}}>
+          {loading?(<Oval/>):(<form action="#" method="post" onSubmit={(e) => e.preventDefault()}>
             <div className="flex justify-between gap-x-10">
               <div className="w-[30%]">
                 <div className="flex flex-col gap-y-2 mb-5">
@@ -175,7 +192,7 @@ const GroupList = () => {
                 />
               </div>
             </div>
-          </form>
+          </form>)}
         </div>
       </ModalComponent>
     </div>

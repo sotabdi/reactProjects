@@ -1,5 +1,5 @@
 import React from "react";
-import Group from "../ChatLeftComponents/Group";
+import MyGroup from "../../HomeComponents/HomeRightComponents/MyGroup";
 import Search from "../../CommonComponents/Search";
 import Friends from "../../HomeComponents/HomeRightComponents/Friends";
 
@@ -8,7 +8,7 @@ const ChatLeft = () => {
   return (
     <div className="flex flex-col gap-y-[43px]">
         <Search/>
-        <Group/>
+        <MyGroup w="427px"/>
         <Friends width={'w-[427px] h-[348px]'}/>
     </div>
   );

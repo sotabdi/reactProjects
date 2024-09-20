@@ -17,7 +17,7 @@ const HomeRight = () => {
       <Friends width={'w-[344px] h-[400px]'}/>
       <UserList />
       <FriendReqest />
-      <MyGroup />
+      <MyGroup width={'344px'} />
       <BlockUser />
     </div>
   );

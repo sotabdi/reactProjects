@@ -90,7 +90,7 @@ const CropperComponent = ({ groupInfo,handleCreate }) => {
                 >
                   Crop Image
                 </button>
-                {cropData?(<button onClick={()=>{handleCreate(cropData)}} className="font-poppins border border-primary_Color text-[16px] text-primary_Color font-semibold rounded-md px-[30px] py-[10px] hover:bg-primary_Color hover:text-white transition-all">
+                {cropData?(<button onClick={()=>{handleCreate(cropData, setCropData)}} className="font-poppins border border-primary_Color text-[16px] text-primary_Color font-semibold rounded-md px-[30px] py-[10px] hover:bg-primary_Color hover:text-white transition-all">
                   Create
                 </button>):(<button disabled className=" disabled:opacity-50 font-poppins border border-primary_Color text-[16px] text-primary_Color font-semibold rounded-md px-[30px] py-[10px]">
                   Create
