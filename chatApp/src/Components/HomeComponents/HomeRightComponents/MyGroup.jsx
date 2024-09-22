@@ -1,32 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import Profileimg from "../../../assets/HomeRightAssets/profileImg1.png";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { FaUserGroup } from "react-icons/fa6";
+import ModalComponent from "../../CommonComponents/ModalComponents/ModalComponent";
 
-const MyGroup = ({width}) => {
-  const db =getDatabase();
+const MyGroup = ({ width }) => {
+  const db = getDatabase();
   const auth = getAuth();
 
-  const [mygroupList, setmygroupList] = useState();
-  
-  useEffect(()=>{
-    const dbref = ref(db, 'groups/');
-    onValue(dbref, (datasnap)=>{
-      let blankarr = []
-      datasnap.forEach((data)=>{
-        if(data.val().whoCreatedUid === auth.currentUser.uid){
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [mygroupList, setmygroupList] = useState([]);
+  const [groupReq, setgroupReq] = useState([])
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  useEffect(() => {
+    const dbref = ref(db, "groups/");
+    onValue(dbref, (datasnap) => {
+      let blankarr = [];
+      datasnap.forEach((data) => {
+        if (data.val().whoCreatedUid === auth.currentUser.uid) {
           blankarr.push({
             ...data.val(),
-            groupKey: data.key
+            groupKey: data.key,
+          });
+        }
+        setmygroupList(blankarr);
+      });
+    });
+  }, []);
+
+  useEffect(()=>{
+    const dbref = ref(db, 'groupRequests/');
+    onValue(dbref, (datasnap)=>{
+      let blankArr = []
+      datasnap.forEach(data => {
+        if(data.val().whoCreatedUid === auth.currentUser.uid){
+          blankArr.push({
+            ...data.val(),
+            groupReqKey: data.key
           })
         }
-        setmygroupList(blankarr)
       })
+      setgroupReq(blankArr)
     })
   },[])
+
+  console.log(groupReq);
   
-  
+
   return (
     <div>
       <div className="flex items-center justify-between px-5 pb-[13px]">
@@ -35,7 +64,10 @@ const MyGroup = ({width}) => {
           <BsThreeDotsVertical />
         </span>
       </div>
-      <div className="px-5 pb-[13px] h-[347px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide" style={{width: width}}>
+      <div
+        className="px-5 pb-[13px] h-[347px] shadow-lg rounded-[20px] overflow-y-scroll scrollbar-hide"
+        style={{ width: width }}
+      >
         {mygroupList?.map((item, index) => (
           <div
             className="w-full flex justify-between items-center border-b border-b-secondary30_cont_color py-[13px]"
@@ -56,14 +88,23 @@ const MyGroup = ({width}) => {
                 </p>
               </div>
             </div>
-            <div>
-              <p className="font-poppins font-medium text-[10px] text-secondary70_cont_color pb-6">
-                Today, 8:56pm
-              </p>
+            <div className="relative cursor-pointer" onClick={openModal}>
+                <p className="font-poppins font-medium text-2xl text-secondary70_cont_color">
+                  <FaUserGroup />
+                </p>
+              <span className="absolute right-[-6px] top-[-6px] flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+              </span>
             </div>
           </div>
         ))}
       </div>
+      <ModalComponent closeModal={closeModal} modalIsOpen={modalIsOpen}>
+        <div className="w-[344px]">
+        sas
+        </div>
+      </ModalComponent>
     </div>
   );
 };
