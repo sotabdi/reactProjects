@@ -142,7 +142,7 @@ const GroupList = () => {
       });
       setgroupRequests(blankArr);
     });
-  }, []);
+  }, [db]);
 
   const handleJoin = (item) => {
     const dbref = ref(db, "groupRequests/");
@@ -207,7 +207,7 @@ const GroupList = () => {
             </div>
             <div>
               {item.whoCreatedUid !== auth.currentUser.uid &&
-                (groupRequests.some(request => request.groupKey === item.groupKey) ? (
+                (groupRequests.some(request => request.groupKey === item.groupKey && request.applicantUid === auth.currentUser.uid) ? (
                   <div className="flex flex-col gap-y-2 delay-300">
                     <button className="px-[20px] text-white bg-primary_Color rounded-[5px] font-poppins font-semibold text-[18px]">
                       Pending
