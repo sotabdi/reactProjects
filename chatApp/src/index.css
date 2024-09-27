@@ -95,4 +95,17 @@
         -ms-transform: scale(1);
         -o-transform: scale(1);
     }
+    .msgIcon {
+        position: relative;
+    }
+    .msgIcon::before {
+        position: absolute;
+        content: "";
+        bottom: 0;
+        left: -8px;
+        background: #f1f1f1;
+        width: 30px;
+        height: 28px;
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
 }

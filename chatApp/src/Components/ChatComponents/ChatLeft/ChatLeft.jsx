@@ -9,7 +9,7 @@ const ChatLeft = () => {
     <div className="flex flex-col gap-y-[43px]">
         <Search/>
         <MyGroup w="427px"/>
-        <Friends width={'w-[427px] h-[348px]'}/>
+        <Friends width={'w-[427px] h-[300px]'}/>
     </div>
   );
 };
