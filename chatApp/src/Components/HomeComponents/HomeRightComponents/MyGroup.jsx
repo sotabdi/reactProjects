@@ -46,7 +46,7 @@ const MyGroup = ({ width }) => {
         setmygroupList(blankarr);
       });
     });
-  }, [auth.currentUser.uid, db]);
+  }, []);
 
   useEffect(() => {
     const dbref = ref(db, "groupRequests/");
