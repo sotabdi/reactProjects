@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterSlice from "../AllSlice/Counter/counterSlice";
+import friendsSlice from "../AllSlice/Friends/friendsSlice";
 
 const store = configureStore({
     reducer: {
-        counters: counterSlice,
+        friends: friendsSlice,
     }
 })
 
