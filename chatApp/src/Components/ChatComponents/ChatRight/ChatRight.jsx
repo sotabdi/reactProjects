@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Img from "../../../assets/ChatAssets/profile1.png";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { IoCameraOutline } from "react-icons/io5";
@@ -16,8 +15,10 @@ import {
 import { errorToast } from "../../../../Utils/Toast";
 import { getAuth } from "firebase/auth";
 import { getTime } from "../../../../Utils/MomentJs/Moment";
+import { ref, push, set, getDatabase, onValue } from "firebase/database";
 const ChatRight = () => {
-  const auth = getAuth()
+  const db = getDatabase();
+  const auth = getAuth();
   const storage = getStorage();
   const [emojiPicker, setemojiPicker] = useState(false);
   const { friends } = useSelector((state) => state.friends);
@@ -26,6 +27,7 @@ const ChatRight = () => {
   const [img, setimg] = useState(null);
   const [imgdownloadURL, setimgdownloadURL] = useState(null);
   const [progress, setprogress] = useState(null);
+  const [allMsg, setallMsg] = useState([]);
   const handleEmojiBtn = () => {
     setemojiPicker(!emojiPicker);
   };
@@ -41,14 +43,34 @@ const ChatRight = () => {
 
   function closeModal() {
     setIsOpen(false);
-    setimg(null);
-    setprogress(null)
+    setprogress(null);
   }
 
   const handleImage = (event) => {
     setimg(event.target.files[0]);
+    closeModal();
   };
-console.log(friends);
+
+  useEffect(() => {
+    const fatcher = () => {
+      const dbref = ref(db, "userMsg/");
+      onValue(dbref, (snapshot) => {
+        let blankArr = [];
+        snapshot.forEach((data) => {
+          if (
+            auth.currentUser.uid === data.val().senderUid ||
+            auth.currentUser.uid === data.val().reciverUid
+          ) {
+            blankArr.push({ ...data.val(), userMsgKey: data.key });
+          }
+        });
+        setallMsg(blankArr);
+      });
+    };
+    fatcher();
+  }, []);
+
+  console.log(allMsg);
 
   // upload imaage and get download URL
   const handleSentImg = () => {
@@ -57,6 +79,7 @@ console.log(friends);
       errorToast(
         'Flie Type must be "image/png", "image/gif", "image/jpeg", "image/webp"'
       );
+      return;
     }
     const storageRef = imgSorageRef(storage, `msgImg/${img.name}`);
     const uploadTask = uploadBytesResumable(storageRef, img);
@@ -75,30 +98,43 @@ console.log(friends);
       () => {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-        setprogress(null);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setimgdownloadURL(downloadURL);
-          
-        })
+        });
       }
     );
   };
 
-const handleSendMsg = () => {
-  let obj = {
-    senderName: auth.currentUser.displayName,
-    senderEmail: auth.currentUser.email,
-    senderUid: auth.currentUser.uid,
-    senderPic: auth.currentUser.photoURL||'',
-    reciverName: friends.Name,
-    reciverEmail: friends.Email,
-    reciverUid: friends.Uid,
-    reciverPic: friends.ProfilePic,
-    msg: massage||'',
-    img: imgdownloadURL||'',
-    createdAt: getTime(),
-  }
-}
+  const handleSendMsg = () => {
+    if (img) {
+      handleSentImg();
+    }
+    if (massage || imgdownloadURL) {
+      const dbref = ref(db, "userMsg/");
+      set(push(dbref), {
+        senderName: auth.currentUser.displayName,
+        senderEmail: auth.currentUser.email,
+        senderUid: auth.currentUser.uid,
+        senderPic: auth.currentUser.photoURL || "",
+        reciverName: friends.Name,
+        reciverEmail: friends.Email,
+        reciverUid: friends.Uid,
+        reciverPic: friends.ProfilePic,
+        msg: massage || "",
+        img: imgdownloadURL || "",
+        createdAt: getTime(),
+      })
+        .catch((err) => {
+          errorToast(err.massage);
+        })
+        .finally(() => {
+          setimg(null);
+          setimgdownloadURL(null);
+          setmassage("");
+          console.log("done");
+        });
+    }
+  };
 
   return (
     <div className="w-full h-full px-7 shadow-lg rounded-[20px] flex flex-col justify-between">
@@ -124,28 +160,51 @@ const handleSendMsg = () => {
               <BsThreeDotsVertical />
             </span>
           </div>
-            {/* chat section start */}
+          {/* chat section start */}
           <div className="w-full h-[600px] py-[47px] px-[65px] flex flex-col gap-y-[25px] overflow-y-scroll">
-            <div className="self-start w-[60%]">
-              <p className="font-poppins text-[16px] font-medium px-[52px] py-[13px] bg-[#F1F1F1] rounded-[10px] inline-block max-w-[60%] my-[7px] msgIcon">
-                Hey There !
-              </p>
-              <p className="font-poppins text-xs text-secondary_cont_color">
-                Today, 2:01pm
-              </p>
-            </div>
-            <div className="self-end w-[60%] text-right">
-              <p className="font-poppins text-[16px] font-medium px-[52px] py-[13px] bg-[#F1F1F1] rounded-[10px] inline-block max-w-[60%] my-[7px] msgIcon">
-                Hey There !
-              </p>
-              <p className="font-poppins text-xs text-secondary_cont_color">
-                Today, 2:01pm
-              </p>
-            </div>
+            {allMsg.map((msg) => (friends.Uid === msg.senderUid ||friends.Uid === msg.reciverUid) && (
+              auth.currentUser.uid === msg.reciverUid &&
+              friends.Uid === msg.senderUid ? (
+                <div key={msg.userMsgKey} className="self-start w-[60%]">
+                  {msg.msg && msg.msg.trim().length > 0 && <p className="font-poppins text-[16px] font-medium px-[52px] py-[13px] bg-[#F1F1F1] rounded-[10px] inline-block max-w-[60%] my-[7px] msgIcon">
+                    {msg.msg}
+                  </p>}
+                  <p className="font-poppins text-xs text-secondary_cont_color">
+                    {msg.createdAt}
+                  </p>
+                </div>
+              ) : (
+                <div
+                  key={msg.userMsgKey}
+                  className="self-end w-[60%] text-right"
+                >
+                  <p className="font-poppins text-[16px] font-medium px-[52px] py-[13px] bg-[#F1F1F1] rounded-[10px] inline-block max-w-[60%] my-[7px] msgIcon">
+                    {msg.msg}
+                  </p>
+                  <p className="font-poppins text-xs text-secondary_cont_color">
+                  {msg.createdAt}
+                  </p>
+                </div>
+              )
+            )
+            )}
           </div>
-            {/* chat section start */}
+          {/* chat section end */}
           <div>
             <div className="w-full relative flex gap-x-[20px] px-5 py-[35px] border-t">
+              {img && (
+                <div className=" bg-gray-200 py-3 px-6 absolute top-[-50%] left-0 w-[97%] flex justify-between">
+                  <p>{img.name}</p>
+                  <p
+                    className="text-xl cursor-pointer"
+                    onClick={() => {
+                      setimg(null);
+                    }}
+                  >
+                    x
+                  </p>
+                </div>
+              )}
               <input
                 type="text"
                 className="w-full bg-[#F1F1F1] py-[15px] rounded-[10px] pl-[15px] pr-[100px] font-openSans font-normal"
@@ -171,7 +230,10 @@ const handleSendMsg = () => {
                   <IoCameraOutline />
                 </span>
               </div>
-              <button className="p-[15px] bg-primary_Color text-white text-2xl rounded-[10px]" onClick={handleSendMsg}>
+              <button
+                className="p-[15px] bg-primary_Color text-white text-2xl rounded-[10px]"
+                onClick={handleSendMsg}
+              >
                 <RiSendPlaneFill />
               </button>
             </div>
@@ -215,25 +277,21 @@ const handleSendMsg = () => {
                 />
               </label>
             </div>
-            {img && (
-              progress ? (
+            {img &&
+              (progress ? (
                 <div className="w-full mt-5 rounded-lg bg-gray-200 ">
                   <button
                     className="py-3 rounded-lg bg-primary_Color font-poppins text-white font-semibold"
-                    style={{ width: `${progress}%` }} // Use object for style
+                    style={{ width: `${Math.round(progress)}%` }} // Use object for style
                   >
                     {`${progress}%`}
                   </button>
                 </div>
               ) : (
-                <button
-                  className="w-full mt-5 py-3 rounded-lg bg-primary_Color font-poppins text-white font-semibold"
-                  onClick={handleSentImg}
-                >
+                <button className="w-full mt-5 py-3 rounded-lg bg-primary_Color font-poppins text-white font-semibold">
                   Sent
                 </button>
-              )
-            )}
+              ))}
           </ModalComponent>
         </>
       )}
